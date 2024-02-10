@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DiabetesDiaryPages.Models;
 
 [Table("covek", Schema = "project")]
+[Index("Email", Name = "UNQ_covek_email", IsUnique = true)]
 [Index("Embg", Name = "UNQ_covek_embg", IsUnique = true)]
 public partial class Covek
 {
@@ -17,6 +18,10 @@ public partial class Covek
     [Column("embg")]
     [StringLength(13)]
     public string Embg { get; set; } = null!;
+
+    [Column("email")]
+    [StringLength(128)]
+    public string Email { get; set; } = null!;
 
     [Column("ime")]
     [StringLength(256)]
