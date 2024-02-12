@@ -56,8 +56,8 @@ public partial class DiabetesDiaryDbContext : DbContext
 
     public virtual DbSet<ZdrastvenRezultat> ZdrastvenRezultat { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Name=DiabetesDiaryPages:DataConnectionString");
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //    => optionsBuilder.UseNpgsql("Name=DiabetesDiaryPages:DataConnectionString");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

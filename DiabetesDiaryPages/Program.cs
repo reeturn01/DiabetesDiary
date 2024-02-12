@@ -14,8 +14,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
 
 // Add DiabetesDiaryDbContext
-
-builder.Services.AddDbContext<DiabetesDiaryDbContext>();
+var dataConnectionString = builder.Configuration.GetConnectionString("DataConnectionString") ?? throw new InvalidOperationException("Connection string 'DataConnectionString' not found.");
+builder.Services.AddDbContext<DiabetesDiaryDbContext>(options =>
+    options.UseNpgsql(dataConnectionString));
 
 builder.Services.AddRazorPages();
 
