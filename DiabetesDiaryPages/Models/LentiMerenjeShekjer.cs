@@ -15,5 +15,5 @@ public partial class LentiMerenjeShekjer
 
     [ForeignKey("Id")]
     [InverseProperty("LentiMerenjeShekjer")]
-    public virtual Medikament IdNavigation { get; set; } = null!;
+    public virtual Medikament Medikament { get; set; } = null!;
 }

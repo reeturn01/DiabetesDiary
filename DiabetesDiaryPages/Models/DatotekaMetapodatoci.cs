@@ -34,9 +34,9 @@ public partial class DatotekaMetapodatoci
     [MaxLength(1)]
     public char TipDatoteka { get; set; }
 
-    [InverseProperty("IdNavigation")]
+    [InverseProperty("DatotekaMetapodatoci")]
     public virtual Faksimil? Faksimil { get; set; }
 
-    [InverseProperty("IdNavigation")]
+    [InverseProperty("DatotekaMetapodatoci")]
     public virtual ZdrastvenRezultat? ZdrastvenRezultat { get; set; }
 }

@@ -38,9 +38,9 @@ public partial class Covek
     [Column("datum_na_ragjanje")]
     public DateOnly DatumNaRagjanje { get; set; }
 
-    [InverseProperty("IdNavigation")]
+    [InverseProperty("Covek")]
     public virtual Dijabeticar? Dijabeticar { get; set; }
 
-    [InverseProperty("IdNavigation")]
+    [InverseProperty("Covek")]
     public virtual Doktor? Doktor { get; set; }
 }

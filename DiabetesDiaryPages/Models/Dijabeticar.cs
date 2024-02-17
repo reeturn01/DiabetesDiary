@@ -24,7 +24,7 @@ public partial class Dijabeticar
 
     [ForeignKey("Id")]
     [InverseProperty("Dijabeticar")]
-    public virtual Covek IdNavigation { get; set; } = null!;
+    public virtual Covek Covek { get; set; } = null!;
 
     [InverseProperty("Dijabeticar")]
     public virtual ICollection<Inventar> Inventar { get; set; } = new List<Inventar>();

@@ -18,5 +18,5 @@ public partial class Doktor
 
     [ForeignKey("Id")]
     [InverseProperty("Doktor")]
-    public virtual Covek IdNavigation { get; set; } = null!;
+    public virtual Covek Covek { get; set; } = null!;
 }

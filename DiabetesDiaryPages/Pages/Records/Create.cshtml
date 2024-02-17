@@ -13,32 +13,99 @@
     <form method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <div class="form-group mb-3">
-            <label asp-for="Record.Date" class="control-label"></label>
-            <input asp-for="Record.Date" class="form-control" />
-            <span asp-validation-for="Record.Date" class="text-danger"></span>
+        <div class="form-group">
+            <div class="col-md-3">
+                <label asp-for="Record.Date" class="control-label"></label>
+                <input asp-for="Record.Date" class="form-control" />
+                <span asp-validation-for="Record.Date" class="text-danger"></span>
+            </div>
         </div>
 
-        <fieldset class="row mb-3">
-            <legend class="col-form-label col-md-3 pt-0">Blood sugar measurement</legend>
-            <div class="col-md-9">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
-                    <label class="form-check-label" for="gridRadios1">
-                        First radio
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                    <label class="form-check-label" for="gridRadios2">
-                        Second radio
-                    </label>
+        <div class="form-group">
+            <div class="form-check form-switch">
+                <label asp-for="Record.HasBloodMeasurement" class="form-check-label"></label>
+                <input type="checkbox" class="form-check-input" asp-for="Record.HasBloodMeasurement" />
+            </div>
+            <div class="row">
+                <div id="BloodMeasurementCnt" class="col-md-3">
+                    <label asp-for="Record.BloodMeasurementRecord.Measurement" class="control-label"></label>
+                    <input asp-for="Record.BloodMeasurementRecord.Measurement" class="form-control" />
+                    <span asp-validation-for="Record.BloodMeasurementRecord.Measurement" class="text-danger"></span>
                 </div>
             </div>
-        </fieldset>
+        </div>
+
+        <div class="form-group">
+            <div class="form-check form-switch">
+                <label asp-for="Record.HasInsulin" class="form-check-label"></label>
+                <input type="checkbox" class="form-check-input" asp-for="Record.HasInsulin" />
+            </div>
+
+            <div class="row">
+                <div id="InsulinRecordsCnt" class="col-md-6">
+                    @if (Model.Record.InsulinRecord != null)
+                    {
+                        @for (int i = 0; i < Model.Record.InsulinRecord.InsulinAdministrations.Count; i++)
+                        {
+                            <div id="Record_InsulinRecord_InsulinAdministrations_@(i)_" class="row insulin-record-insulin-administered-item">
+                                <div class="col-md-5">
+                                    <label asp-for="Record.InsulinRecord.InsulinAdministrations[i].InsulinId" class ="control-label"></label>
+                                    <select asp-for="Record.InsulinRecord.InsulinAdministrations[i].InsulinId" asp-items="Model.InsulinSelectItems" class="form-control"></select>
+                                    <span asp-validation-for="Record.InsulinRecord.InsulinAdministrations[i].InsulinId" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-5">
+                                    <label asp-for="Record.InsulinRecord.InsulinAdministrations[i].Amount" class="control-label"></label>
+                                    <input asp-for="Record.InsulinRecord.InsulinAdministrations[i].Amount" class="form-control" />
+                                    <span asp-validation-for="Record.InsulinRecord.InsulinAdministrations[i].Amount" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-2">
+                                    <button id="RemoveBtn_Record_InsulinRecord_InsulinAdministrations_@(i)_" type="button" class="btn btn-outline-danger btn-remove-insulin-record">Remove</button>
+                                </div>
+                            </div>
+                        }
+                    }
+                    <button id="AddInsulinBtn" type="button" class="btn btn-success">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-check form-switch">
+                <label asp-for="Record.HasMeal" class="form-check-label"></label>
+                <input type="checkbox" class="form-check-input" asp-for="Record.HasMeal" />
+            </div>
+            <div class="row">
+                <div id="MealRecordsCnt" class="col-md-6">
+                    @if(Model.Record.MealRecord != null){
+                        @for (int i = 0; i < Model.Record.MealRecord.Food.Count; i++)
+                        {
+                            <div id="Record_MealRecord_Food_@(i)_" class="row meal-record-food-item">
+                                <div class="col-md-5">
+                                    <label asp-for="Record.MealRecord.Food[i].FoodId" class="control-label"></label>
+                                    <select asp-for="Record.MealRecord.Food[i].FoodId" asp-items="Model.FoodSelectItems" class="form-control"></select>
+                                    <span asp-validation-for="Record.MealRecord.Food[i].FoodId" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-5">
+                                    <label asp-for="Record.MealRecord.Food[i].Amount" class="control-label"></label>
+                                    <input asp-for="Record.MealRecord.Food[i].Amount" class="form-control" />
+                                    <span asp-validation-for="Record.MealRecord.Food[i].Amount" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-2">
+                                    <button id="RemoveBtn_Record_MealRecord_Food_@(i)_" type="button" class="btn btn-outline-danger btn-remove-meal-record">Remove</button>
+                                </div>
+                            </div>
+                        }
+                    }
+                    <button id="AddFoodBtn" type="button" class="btn btn-success">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/Pages/Records/Create.cshtml.js"></script>
 }

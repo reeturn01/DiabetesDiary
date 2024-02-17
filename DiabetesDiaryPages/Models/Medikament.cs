@@ -26,12 +26,12 @@ public partial class Medikament
     [MaxLength(1)]
     public char TipMedikament { get; set; }
 
-    [InverseProperty("IdNavigation")]
+    [InverseProperty("Medikament")]
     public virtual Insulin? Insulin { get; set; }
 
     [InverseProperty("Medikament")]
     public virtual ICollection<Inventar> Inventar { get; set; } = new List<Inventar>();
 
-    [InverseProperty("IdNavigation")]
+    [InverseProperty("Medikament")]
     public virtual LentiMerenjeShekjer? LentiMerenjeShekjer { get; set; }
 }

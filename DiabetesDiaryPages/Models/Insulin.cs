@@ -18,7 +18,7 @@ public partial class Insulin
 
     [ForeignKey("Id")]
     [InverseProperty("Insulin")]
-    public virtual Medikament IdNavigation { get; set; } = null!;
+    public virtual Medikament Medikament { get; set; } = null!;
 
     [ForeignKey("TipInsulinId")]
     [InverseProperty("Insulin")]

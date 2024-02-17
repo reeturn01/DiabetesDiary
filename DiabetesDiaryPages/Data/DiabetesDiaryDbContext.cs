@@ -56,8 +56,8 @@ public partial class DiabetesDiaryDbContext : DbContext
 
     public virtual DbSet<ZdrastvenRezultat> ZdrastvenRezultat { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Name=DiabetesDiaryPages:DataConnectionString");
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //    => optionsBuilder.UseNpgsql("Name=DiabetesDiaryPages:DataConnectionString");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -81,7 +81,7 @@ public partial class DiabetesDiaryDbContext : DbContext
 
             entity.Property(e => e.Id).ValueGeneratedNever();
 
-            entity.HasOne(d => d.IdNavigation).WithOne(p => p.Dijabeticar)
+            entity.HasOne(d => d.Covek).WithOne(p => p.Dijabeticar)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_dijabeticar_id");
 
@@ -96,7 +96,7 @@ public partial class DiabetesDiaryDbContext : DbContext
 
             entity.Property(e => e.Id).ValueGeneratedNever();
 
-            entity.HasOne(d => d.IdNavigation).WithOne(p => p.Doktor)
+            entity.HasOne(d => d.Covek).WithOne(p => p.Doktor)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_doktor_id");
         });
@@ -115,7 +115,7 @@ public partial class DiabetesDiaryDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_doktor_id");
 
-            entity.HasOne(d => d.IdNavigation).WithOne(p => p.Faksimil)
+            entity.HasOne(d => d.DatotekaMetapodatoci).WithOne(p => p.Faksimil)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_faksimil_id");
         });
@@ -137,7 +137,7 @@ public partial class DiabetesDiaryDbContext : DbContext
 
             entity.Property(e => e.Id).ValueGeneratedNever();
 
-            entity.HasOne(d => d.IdNavigation).WithOne(p => p.Insulin)
+            entity.HasOne(d => d.Medikament).WithOne(p => p.Insulin)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Insulin_id_Medikament_id");
 
@@ -163,7 +163,7 @@ public partial class DiabetesDiaryDbContext : DbContext
 
             entity.Property(e => e.Id).ValueGeneratedNever();
 
-            entity.HasOne(d => d.IdNavigation).WithOne(p => p.LentiMerenjeShekjer)
+            entity.HasOne(d => d.Medikament).WithOne(p => p.LentiMerenjeShekjer)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Lenti_merenje_shekjer_id_Medikament_id");
         });
@@ -258,7 +258,7 @@ public partial class DiabetesDiaryDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_zdrastven_rezultat_dijabeticar_id");
 
-            entity.HasOne(d => d.IdNavigation).WithOne(p => p.ZdrastvenRezultat)
+            entity.HasOne(d => d.DatotekaMetapodatoci).WithOne(p => p.ZdrastvenRezultat)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_zdrastven_rezultat_id");
         });

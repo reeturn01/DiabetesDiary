@@ -29,5 +29,5 @@ public partial class Faksimil
 
     [ForeignKey("Id")]
     [InverseProperty("Faksimil")]
-    public virtual DatotekaMetapodatoci IdNavigation { get; set; } = null!;
+    public virtual DatotekaMetapodatoci DatotekaMetapodatoci { get; set; } = null!;
 }

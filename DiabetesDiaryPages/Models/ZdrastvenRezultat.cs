@@ -22,5 +22,5 @@ public partial class ZdrastvenRezultat
 
     [ForeignKey("Id")]
     [InverseProperty("ZdrastvenRezultat")]
-    public virtual DatotekaMetapodatoci IdNavigation { get; set; } = null!;
+    public virtual DatotekaMetapodatoci DatotekaMetapodatoci { get; set; } = null!;
 }
