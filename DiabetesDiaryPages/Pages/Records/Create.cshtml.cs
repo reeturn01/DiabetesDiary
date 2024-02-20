@@ -190,7 +190,7 @@ namespace DiabetesDiaryPages.Pages.Records
             await _context.AddAsync(newRecord, CancellationToken.None);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("/Index");
+            return RedirectToPage("./Index");
         }
 
         public async Task<IActionResult> OnGetFoodItemsAsync()
