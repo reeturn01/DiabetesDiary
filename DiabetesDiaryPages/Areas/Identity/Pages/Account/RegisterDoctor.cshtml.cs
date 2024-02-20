@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using DiabetesDiaryPages.Authorization;
 using DiabetesDiaryPages.Data;
 using DiabetesDiaryPages.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -167,6 +168,12 @@ namespace DiabetesDiaryPages.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    if((await _userManager.AddToRoleAsync(user, Constants.Roles.DoctorRole)).Succeeded == false) 
+                    {
+                        ModelState.AddModelError(string.Empty, "Unable to add user to Doctor role!");
+                        return Page();
+                    }
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

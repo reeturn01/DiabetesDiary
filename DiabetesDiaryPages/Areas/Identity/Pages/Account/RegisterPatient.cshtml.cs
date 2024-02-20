@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using DiabetesDiaryPages.Authorization;
 using DiabetesDiaryPages.Data;
 using DiabetesDiaryPages.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +18,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DiabetesDiaryPages.Areas.Identity.Pages.Account
 {
@@ -179,6 +179,16 @@ namespace DiabetesDiaryPages.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    var identityResultAddToRole = await _userManager.AddToRoleAsync(user, Constants.Roles.PatientRole);
+                    if (identityResultAddToRole.Succeeded == false) 
+                    {
+                        foreach (var error in identityResultAddToRole.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                        return Page();
+                    }
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

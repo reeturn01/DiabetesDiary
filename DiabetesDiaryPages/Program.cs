@@ -24,7 +24,12 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.AddDbContext<DiabetesDiaryDbContext>();
 
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages()
+    .AddRazorPagesOptions(options =>
+    {
+        options.Conventions.AllowAnonymousToAreaPage("Identity", "/Account/RegisterPatient");
+        options.Conventions.AllowAnonymousToAreaPage("Identity", "/Account/RegisterDoctor");
+    });
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -51,6 +56,18 @@ builder.Services.AddAuthorization(options =>
 });
 
 var app = builder.Build();
+
+// Add Doctor and Patient Roles to IdentityDB
+
+using (var scope = app.Services.CreateAsyncScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationIdentityDbContext>();
+    await context.Database.MigrateAsync();
+
+    await SeedIdentityData.Initialize(services);
+}
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

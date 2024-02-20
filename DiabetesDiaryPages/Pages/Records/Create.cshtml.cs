@@ -13,16 +13,19 @@ using Newtonsoft.Json;
 using DiabetesDiaryPages.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Identity;
 
 namespace DiabetesDiaryPages.Pages.Records
 {
     public class CreateModel : PageModel
     {
         private readonly DiabetesDiaryPages.Data.DiabetesDiaryDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public CreateModel(DiabetesDiaryPages.Data.DiabetesDiaryDbContext context)
+        public CreateModel(DiabetesDiaryPages.Data.DiabetesDiaryDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult OnGet()
@@ -104,11 +107,11 @@ namespace DiabetesDiaryPages.Pages.Records
                 FoodSelectItems = [new SelectListItem { Text = "-- Select Food item --", Selected = true, Disabled = true }];
                 InsulinSelectItems = [new SelectListItem { Text = "-- Select Insulin item --", Selected = true, Disabled = true }];
 
-                _context.Hrana.Include(e => e.NacinPrigotvuvanjeHrana)
-                    .ForEachAsync(e => FoodSelectItems.Add(new SelectListItem { Text = string.Join(", ", e.Proizvoditel, e.Ime, e.NacinPrigotvuvanjeHrana.Ime), Value = e.Id.ToString() })).Wait();
+                await _context.Hrana.Include(e => e.NacinPrigotvuvanjeHrana)
+                    .ForEachAsync(e => FoodSelectItems.Add(new SelectListItem { Text = string.Join(", ", e.Proizvoditel, e.Ime, e.NacinPrigotvuvanjeHrana.Ime), Value = e.Id.ToString() }));
 
-                _context.Insulin.Include(e => e.Medikament).Include(e => e.TipInsulin)
-                    .ForEachAsync(e => InsulinSelectItems.Add(new SelectListItem { Text = string.Join(", ", e.Medikament.Proizvoditel, e.Medikament.Ime, e.TipInsulin.Ime), Value = e.Id.ToString() })).Wait();
+                await _context.Insulin.Include(e => e.Medikament).Include(e => e.TipInsulin)
+                    .ForEachAsync(e => InsulinSelectItems.Add(new SelectListItem { Text = string.Join(", ", e.Medikament.Proizvoditel, e.Medikament.Ime, e.TipInsulin.Ime), Value = e.Id.ToString() }));
 
 
                 return Page();
@@ -116,17 +119,30 @@ namespace DiabetesDiaryPages.Pages.Records
 
             if (User.Identity == null)
             {
-                return Unauthorized();
-            }
-            if (User.Identity.Name.IsNullOrEmpty())
-            {
-                return Unauthorized();
+                return Forbid();
             }
 
-            // DA SE PREPRAVI
-            string? currentUserName = User.Identity.Name;
+            if (User.Identity.Name == null)
+            {
+                return Forbid();
+            }
+
+            var userIdentity = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (userIdentity == null)
+            {
+                return Forbid();
+            }
+
+            string? currentUserEmail = await _userManager.GetEmailAsync(userIdentity);
+            if (currentUserEmail == null)
+            {
+                return Forbid();
+            }
+
             var dijabeticarId = await _context.Covek
-                .Where(e => e.Email == "nikola.torbovski@students.finki.ukim.mk" && e.Dijabeticar != null)
+                .Where(e => 
+                    e.Email.Equals(currentUserEmail) && 
+                    e.Dijabeticar != null)
                 .Select(e => e.Id)
                 .SingleAsync();
 
@@ -138,7 +154,11 @@ namespace DiabetesDiaryPages.Pages.Records
 
             if (Record.HasMeal)
             {
-                
+                newRecord.ZapisHrana = new ZapisHrana()
+                {
+                    DijabeticarId = dijabeticarId,
+                    Data = DateOnly.FromDateTime(Record.Date)
+                };
                 Record.MealRecord.Food
                     .ForEach(item => {
                         newRecord.ZapisHrana.Obrok
@@ -150,9 +170,13 @@ namespace DiabetesDiaryPages.Pages.Records
                     });
             }
             if (Record.HasBloodMeasurement) {
-                newRecord.ZapisSoIzmerenSekjer.Vrednost = Record.BloodMeasurementRecord.Measurement;
+                newRecord.ZapisSoIzmerenSekjer = new ZapisSoIzmerenSekjer()
+                {
+                    Vrednost = Record.BloodMeasurementRecord.Measurement
+                };
             }
             if (Record.HasInsulin) {
+                newRecord.ZapisInsulin = new ZapisInsulin();
                 Record.InsulinRecord.InsulinAdministrations.ForEach(item => {
                     newRecord.ZapisInsulin.ZapisInsulinDoziranInsulin
                     .Add(new ZapisInsulinDoziranInsulin()
@@ -164,6 +188,7 @@ namespace DiabetesDiaryPages.Pages.Records
             }
 
             await _context.AddAsync(newRecord, CancellationToken.None);
+            await _context.SaveChangesAsync();
 
             return RedirectToPage("/Index");
         }
