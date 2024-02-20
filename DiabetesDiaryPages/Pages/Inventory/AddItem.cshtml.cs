@@ -109,7 +109,7 @@ namespace DiabetesDiaryPages.Pages.Inventory
                 await _diabetesDiaryDbContext.SaveChangesAsync();
             }
 
-            return RedirectToPage("/Index");
+            return RedirectToPage("./Index");
         }
 
         public async Task<JsonResult> OnGetInsulinItemsAsync()

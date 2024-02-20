@@ -39,7 +39,7 @@
             <td>       
                 @Html.DisplayFor(modelItem => item.BloodMeasurementValue)
             </td>
-            <td id="accordionFood"  class="accordion accordion-flush">
+            <td id="accordionFood@(recordNum)"  class="accordion accordion-flush">
                     @if(item.FoodItems != null && item.FoodItems.Count > 0)
                     {
                         <h2 class="accordion-header">
@@ -47,7 +47,7 @@
                                 Food items
                             </button>
                         </h2>
-                        <table id="food-flush-collapse@(recordNum)" class="table accordion-collapse collapse" data-bs-parent="#accordionFood">
+                        <table id="food-flush-collapse@(recordNum)" class="table accordion-collapse collapse" data-bs-parent="#accordionFood@(recordNum)">
                         <thead>
                             <tr>
                                 <th>
@@ -74,7 +74,7 @@
                          </table>
                     }
             </td>
-            <td id="accordionInsulin" class="accordion accordion-flush">
+                <td id="accordionInsulin@(recordNum)" class="accordion accordion-flush">
                 @if (item.InsulinAdministrations != null && item.InsulinAdministrations.Count > 0)
                 {
                         <h2 class="accordion-header">
@@ -82,7 +82,7 @@
                                 Insulin items
                             </button>
                         </h2>
-                        <table id="insulin-flush-collapse@(recordNum)" class="table accordion-collapse collapse" data-bs-parent="#accordionInsulin">
+                        <table id="insulin-flush-collapse@(recordNum)" class="table accordion-collapse collapse" data-bs-parent="#accordionInsulin@(recordNum)">
                         <thead>
                             <tr>
                                 <th>

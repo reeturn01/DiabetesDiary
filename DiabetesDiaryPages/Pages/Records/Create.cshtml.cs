@@ -34,56 +34,56 @@ namespace DiabetesDiaryPages.Pages.Records
             FoodSelectItems = [new SelectListItem { Text = "-- Select Food item --", Selected = true, Disabled = true }];
             InsulinSelectItems = [new SelectListItem { Text = "-- Select Insulin item --", Selected = true, Disabled = true }];
 
-            _context.Hrana.Include(e => e.NacinPrigotvuvanjeHrana)
-                .ForEachAsync(e => FoodSelectItems.Add(new SelectListItem { Text = string.Join(", ", e.Proizvoditel, e.Ime, e.NacinPrigotvuvanjeHrana.Ime), Value = e.Id.ToString() })).Wait();
+            Record = new();
+            //_context.Hrana.Include(e => e.NacinPrigotvuvanjeHrana)
+            //    .ForEachAsync(e => FoodSelectItems.Add(new SelectListItem { Text = string.Join(", ", e.Proizvoditel, e.Ime, e.NacinPrigotvuvanjeHrana.Ime), Value = e.Id.ToString() })).Wait();
 
-            _context.Insulin.Include(e => e.Medikament).Include(e => e.TipInsulin)
-                .ForEachAsync(e => InsulinSelectItems.Add(new SelectListItem { Text = string.Join(", ", e.Medikament.Proizvoditel, e.Medikament.Ime, e.TipInsulin.Ime), Value = e.Id.ToString() })).Wait();
-
-            Record = new()
-            {
-                Date = new DateTime(2011, 09, 28),
-                HasBloodMeasurement = true,
-                BloodMeasurementRecord = new() { Measurement = 9.7M },
-                HasInsulin = true,
-                InsulinRecord = new InsulinRecordModel
-                {
-                    InsulinAdministrations = new List<InsulinAdministrationModel>(){
-                        new InsulinAdministrationModel()
-                        {
-                            InsulinId = 1,
-                            Amount = 10
-                        },
-                        new InsulinAdministrationModel()
-                        {
-                            InsulinId = 2,
-                            Amount = 20
-                        }
-                    }
-                },
-                HasMeal = true,
-                MealRecord = new()
-                {
-                    Food = new List<FoodModel>
-                    {
-                        new FoodModel()
-                        {
-                            FoodId = 1,
-                            Amount = 10
-                        },
-                        new FoodModel()
-                        {
-                            FoodId= 2,
-                            Amount = 20
-                        },
-                        new FoodModel()
-                        {
-                            FoodId = 3,
-                            Amount = 30
-                        }
-                    }
-                }
-            };
+            //_context.Insulin.Include(e => e.Medikament).Include(e => e.TipInsulin)
+            //    .ForEachAsync(e => InsulinSelectItems.Add(new SelectListItem { Text = string.Join(", ", e.Medikament.Proizvoditel, e.Medikament.Ime, e.TipInsulin.Ime), Value = e.Id.ToString() })).Wait();
+            //Record = new()
+            //{
+            //    Date = new DateTime(2011, 09, 28),
+            //    HasBloodMeasurement = true,
+            //    BloodMeasurementRecord = new() { Measurement = 9.7M },
+            //    HasInsulin = true,
+            //    InsulinRecord = new InsulinRecordModel
+            //    {
+            //        InsulinAdministrations = new List<InsulinAdministrationModel>(){
+            //            new InsulinAdministrationModel()
+            //            {
+            //                InsulinId = 1,
+            //                Amount = 10
+            //            },
+            //            new InsulinAdministrationModel()
+            //            {
+            //                InsulinId = 2,
+            //                Amount = 20
+            //            }
+            //        }
+            //    },
+            //    HasMeal = true,
+            //    MealRecord = new()
+            //    {
+            //        Food = new List<FoodModel>
+            //        {
+            //            new FoodModel()
+            //            {
+            //                FoodId = 1,
+            //                Amount = 10
+            //            },
+            //            new FoodModel()
+            //            {
+            //                FoodId= 2,
+            //                Amount = 20
+            //            },
+            //            new FoodModel()
+            //            {
+            //                FoodId = 3,
+            //                Amount = 30
+            //            }
+            //        }
+            //    }
+            //};
 
             return Page();
         }
@@ -190,7 +190,7 @@ namespace DiabetesDiaryPages.Pages.Records
             await _context.AddAsync(newRecord, CancellationToken.None);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("/Index");
+            return RedirectToPage("./Index");
         }
 
         public async Task<IActionResult> OnGetFoodItemsAsync()
@@ -243,7 +243,7 @@ namespace DiabetesDiaryPages.Pages.Records
         {
             [Required]
             [DataType(DataType.Date)]
-            public DateTime Date { get; set; }
+            public DateTime Date { get; set; } = DateTime.Now;
             public bool HasBloodMeasurement { get; set; }
             public bool HasMeal { get; set; }
             public bool HasInsulin { get; set; }

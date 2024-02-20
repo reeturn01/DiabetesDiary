@@ -368,7 +368,7 @@ function toggleValidationForBloodMeasurement(state) {
 document.addEventListener('DOMContentLoaded', (event) => {
     //#region Prevent empty form submit
 
-    let formElement = document.getElementsByTagName('form')[0];
+    let formElement = document.getElementById('NewRecordForm');
     formElement.addEventListener('submit', (event) => {
         const hasBloodMeasurementCheckboxValue = document.getElementById('Record_HasBloodMeasurement').checked;
         const hasInsulinCheckboxValue = document.getElementById('Record_HasInsulin').checked;
