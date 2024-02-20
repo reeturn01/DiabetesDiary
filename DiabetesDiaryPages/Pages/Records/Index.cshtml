@@ -1,0 +1,116 @@
+﻿@page
+@model DiabetesDiaryPages.Pages.Records.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Records[0].Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Records[0].BloodMeasurementValue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Records[0].FoodItems)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Records[0].InsulinAdministrations)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int recordNum = 1;
+        }
+@foreach (var item in Model.Records) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>       
+                @Html.DisplayFor(modelItem => item.BloodMeasurementValue)
+            </td>
+            <td id="accordionFood"  class="accordion accordion-flush">
+                    @if(item.FoodItems != null && item.FoodItems.Count > 0)
+                    {
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#food-flush-collapse@(recordNum)" aria-expanded="false" aria-controls="food-flush-collapse@(recordNum)">
+                                Food items
+                            </button>
+                        </h2>
+                        <table id="food-flush-collapse@(recordNum)" class="table accordion-collapse collapse" data-bs-parent="#accordionFood">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Records[0].FoodItems[0].Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Records[0].FoodItems[0].Amount)
+                                </th>
+                            </tr>
+                        </thead>
+                        @foreach (var food in item.FoodItems)
+                        {
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => food.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => food.Amount)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                        }
+                         </table>
+                    }
+            </td>
+            <td id="accordionInsulin" class="accordion accordion-flush">
+                @if (item.InsulinAdministrations != null && item.InsulinAdministrations.Count > 0)
+                {
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#insulin-flush-collapse@(recordNum)" aria-expanded="false" aria-controls="insulin-flush-collapse@(recordNum)">
+                                Insulin items
+                            </button>
+                        </h2>
+                        <table id="insulin-flush-collapse@(recordNum)" class="table accordion-collapse collapse" data-bs-parent="#accordionInsulin">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Records[0].InsulinAdministrations[0].Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Records[0].InsulinAdministrations[0].Amount)
+                                </th>
+                            </tr>
+                        </thead>
+                    @foreach (var insulin in item.InsulinAdministrations)
+                    {
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => insulin.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => insulin.Amount)
+                                    </td>
+                                </tr>
+                            </tbody>
+                    }
+                    </table>
+                }
+            </td>
+        </tr>
+        recordNum++;
+}
+    </tbody>
+</table>
