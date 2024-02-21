@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DiabetesDiaryPages.Models;
 using Microsoft.EntityFrameworkCore;
+using DiabetesDiaryPages.ViewModels;
 
 namespace DiabetesDiaryPages.Data;
 
@@ -267,4 +268,6 @@ public partial class DiabetesDiaryDbContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+public DbSet<DiabetesDiaryPages.ViewModels.Food> Food { get; set; } = default!;
 }

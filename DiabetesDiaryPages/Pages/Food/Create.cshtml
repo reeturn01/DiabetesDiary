@@ -1,0 +1,71 @@
+﻿@page
+@model DiabetesDiaryPages.Pages.Food.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_DoctorLayout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Food</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Item.Name" class="control-label"></label>
+                <input asp-for="Item.Name" class="form-control" />
+                <span asp-validation-for="Item.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.Manufacturer" class="control-label"></label>
+                <input asp-for="Item.Manufacturer" class="form-control" />
+                <span asp-validation-for="Item.Manufacturer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.GlicemicIndex" class="control-label"></label>
+                <input asp-for="Item.GlicemicIndex" class="form-control" />
+                <span asp-validation-for="Item.GlicemicIndex" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.Calories" class="control-label"></label>
+                <input asp-for="Item.Calories" class="form-control" />
+                <span asp-validation-for="Item.Calories" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.Carbohydrates" class="control-label"></label>
+                <input asp-for="Item.Carbohydrates" class="form-control" />
+                <span asp-validation-for="Item.Carbohydrates" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.Sugars" class="control-label"></label>
+                <input asp-for="Item.Sugars" class="form-control" />
+                <span asp-validation-for="Item.Sugars" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.Fat" class="control-label"></label>
+                <input asp-for="Item.Fat" class="form-control" />
+                <span asp-validation-for="Item.Fat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.PreparationType" class="control-label"></label>
+                <select asp-for="Item.PreparationType" class="form-control" asp-items="Model.PreparationTypesSelectList">
+                    <option selected="selected" disabled="disabled">-- Izberi tip na prigotvuvanje --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
