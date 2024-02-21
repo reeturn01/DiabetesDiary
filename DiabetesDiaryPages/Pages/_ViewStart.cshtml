@@ -1,3 +1,15 @@
-﻿@{
-    Layout = "_Layout";
+﻿@using DiabetesDiaryPages.Authorization
+@{
+    @if (User.IsInRole(Constants.Roles.DoctorRole))
+    {
+        Layout = "_DoctorLayout";
+    }
+    else if (User.IsInRole(Constants.Roles.PatientRole))
+    {
+        Layout = "_PatientLayout";
+    }
+    else
+    {
+        Layout = "_Layout";
+    } 
 }
