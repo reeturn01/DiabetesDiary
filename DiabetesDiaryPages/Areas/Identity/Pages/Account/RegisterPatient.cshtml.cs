@@ -99,6 +99,10 @@ namespace DiabetesDiaryPages.Areas.Identity.Pages.Account
             public DateTime DateOfBirth { get; set; }
 
             [Required]
+            [DataType(DataType.Date)]
+            public DateTime DateOfDiagnosis { get; set; }
+
+            [Required]
             public int DiabetesType { get; set; }
 
             /// <summary>
@@ -159,7 +163,8 @@ namespace DiabetesDiaryPages.Areas.Identity.Pages.Account
                     Pol = (char)Input.Gender,
                     Dijabeticar = new Dijabeticar()
                     {
-                        TipDijabetesId = Input.DiabetesType
+                        TipDijabetesId = Input.DiabetesType,
+                        DataNaOtkrivanje = DateOnly.FromDateTime(Input.DateOfDiagnosis)
                     }
                 };
                 try
